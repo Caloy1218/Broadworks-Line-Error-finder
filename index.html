@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BW Line Error Finder</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>BroadWorks Line Error Finder</h1>
+        </header>
+        <main>
+            <div class="upload-section">
+                <input type="file" id="fileInput" accept="*/*">
+                <div id="progressContainer">
+                    <p id="uploadProgressText"></p>
+                    <div id="uploadProgressBar"></div>
+                </div>
+            </div>
+            <div class="counts">
+                <div class="count">
+                    <h2>Deleted Line Counts:</h2>
+                    <p>Excess Lines: <span id="excessCount">0</span></p>
+                    <p>Lacking Lines: <span id="lackingCount">0</span></p>
+                </div>
+                <button id="downloadButton" disabled>Download File</button>
+            </div>
+            <div class="lines">
+                <div class="paper">
+                    <h2>Deleted Excess Lines:</h2>
+                    <div id="excessLines"></div>
+                </div>
+                <div class="paper">
+                    <h2>Deleted Lacking Lines:</h2>
+                    <div id="lackingLines"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
