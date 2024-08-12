@@ -71,10 +71,23 @@ function displayLines(lines, elementId) {
     lines.forEach((line) => {
         const div = document.createElement('div');
         div.className = 'line';
-        div.innerText = line;
+        
+        const boldPart = document.createElement('span');
+        const remainingPart = document.createElement('span');
+        
+        const splitLine = line.split(':');
+        boldPart.textContent = `${splitLine[0]}: `;
+        remainingPart.textContent = splitLine.slice(1).join(':');
+        
+        boldPart.style.fontWeight = 'bold';
+        
+        div.appendChild(boldPart);
+        div.appendChild(remainingPart);
+        
         element.appendChild(div);
     });
 }
+
 
 document.getElementById('downloadButton').addEventListener('click', createNewFile);
 
