@@ -19,7 +19,7 @@ header h1 {
     text-align: center;
     color: #1976d2;
     font-size: 2rem;
-    margin-bottom: 20px;
+    margin: 0px;
 }
 
 .upload-section {
@@ -39,7 +39,7 @@ input[type="file"] {
 
 #progressContainer {
     width: 100%;
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 #uploadProgressText {
@@ -60,7 +60,7 @@ input[type="file"] {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 40px;
+    margin-top: 10px;
 }
 
 .count h2 {
@@ -94,7 +94,6 @@ button:not(:disabled):hover {
     flex-direction: column;
     justify-content: space-between;
     gap: 20px;
-    margin-top: 40px;
 }
 
 .paper {
@@ -115,9 +114,9 @@ button:not(:disabled):hover {
 
 .line {
     margin-bottom: 10px;
-    font-size: 0.9rem;
+    font-size: .8rem;
     word-wrap: break-word;
 }
-.paper #excessLines{
-    font-size: 10px;
+.lines .paper #excessLines{
+    font-size: 80px;
 }
