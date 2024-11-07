@@ -14,30 +14,14 @@
         </header>
         <main>
             <div class="upload-section">
-                <input type="file" id="fileInput" accept="*/*">
+                <input type="file" id="fileInput" accept="*/*" multiple>
                 <div id="progressContainer">
                     <p id="uploadProgressText"></p>
                     <div id="uploadProgressBar"></div>
                 </div>
             </div>
-            <div class="counts">
-                <div class="count">
-                    <h2>Deleted Line Counts:</h2>
-                    <p>Excess Lines: <span id="excessCount">0</span></p>
-                    <p>Lacking Lines: <span id="lackingCount">0</span></p>
-                </div>
-                <button id="downloadButton" disabled>Download File</button>
-            </div>
-            <div class="lines">
-                <div class="paper">
-                    <h2>Deleted Excess Lines:</h2>
-                    <div id="excessLines"></div>
-                </div>
-                <div class="paper">
-                    <h2>Deleted Lacking Lines:</h2>
-                    <div id="lackingLines"></div>
-                </div>
-            </div>
+            <div id="filesContainer"></div>
+            <button id="downloadButton" disabled>Download File</button>
         </main>
     </div>
     <script src="script.js"></script>

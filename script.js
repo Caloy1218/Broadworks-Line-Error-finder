@@ -1,68 +1,62 @@
 document.getElementById('fileInput').addEventListener('change', handleFileChange);
 
-let fileName = '';
-let processedContent = '';
-
 function handleFileChange(e) {
-    const file = e.target.files[0];
-    const reader = new FileReader();
+    const files = e.target.files;
+    if (files.length > 10) {
+        alert("Please select up to 10 files.");
+        return;
+    }
 
-    fileName = file.name;
-    setUploadProgress(0);
-    document.getElementById('downloadButton').disabled = true;
+    document.getElementById('filesContainer').innerHTML = ''; // Clear previous entries
 
-    reader.onloadstart = () => setUploadProgress(10);
+    Array.from(files).forEach(file => {
+        const fileReader = new FileReader();
 
-    reader.onprogress = (event) => {
-        if (event.lengthComputable) {
-            const progress = Math.round((event.loaded / event.total) * 100);
-            setUploadProgress(progress);
-        }
-    };
+        // Create container for each file
+        const fileContainer = document.createElement('div');
+        fileContainer.className = 'file-container';
+        fileContainer.innerHTML = `<h3>${file.name}</h3>
+                                    <p>Excess Lines: <span id="excessCount-${file.name}">0</span></p>
+                                    <p>Lacking Lines: <span id="lackingCount-${file.name}">0</span></p>
+                                    <div class="paper">
+                                        <h4>Deleted Excess Lines:</h4>
+                                        <div id="excessLines-${file.name}"></div>
+                                    </div>
+                                    <div class="paper">
+                                        <h4>Deleted Lacking Lines:</h4>
+                                        <div id="lackingLines-${file.name}"></div>
+                                    </div>`;
+        document.getElementById('filesContainer').appendChild(fileContainer);
 
-    reader.onloadend = (event) => {
-        setUploadProgress(100);
-        document.getElementById('downloadButton').disabled = false;
-        const content = event.target.result;
-        processFileContent(content);
-    };
+        fileReader.onload = function(event) {
+            processFileContent(event.target.result, file.name);
+        };
 
-    reader.readAsText(file);
+        fileReader.readAsText(file);
+    });
 }
 
-function setUploadProgress(progress) {
-    document.getElementById('uploadProgressText').innerText = `Search Error Progress: ${progress}%`;
-    document.getElementById('uploadProgressBar').style.width = `${progress}%`;
-}
-
-function processFileContent(content) {
+function processFileContent(content, fileName) {
     const linesArray = content.split('\n');
     let excessCount = 0;
     let lackingCount = 0;
     const excessLines = [];
     const lackingLines = [];
 
-    const filteredLines = linesArray.filter((line, index) => {
-        if (index === linesArray.length - 1) return true;
+    linesArray.forEach((line, index) => {
         if (line.length > 421) {
             excessCount++;
             excessLines.push(`Line ${index + 1}: ${line}`);
-            return false;
         } else if (line.length < 421) {
             lackingCount++;
             lackingLines.push(`Line ${index + 1}: ${line}`);
-            return false;
         }
-        return true;
     });
 
-    document.getElementById('excessCount').innerText = excessCount;
-    document.getElementById('lackingCount').innerText = lackingCount;
-
-    displayLines(excessLines, 'excessLines');
-    displayLines(lackingLines, 'lackingLines');
-
-    processedContent = filteredLines.join('\n');
+    document.getElementById(`excessCount-${fileName}`).innerText = excessCount;
+    document.getElementById(`lackingCount-${fileName}`).innerText = lackingCount;
+    displayLines(excessLines, `excessLines-${fileName}`);
+    displayLines(lackingLines, `lackingLines-${fileName}`);
 }
 
 function displayLines(lines, elementId) {
@@ -71,38 +65,14 @@ function displayLines(lines, elementId) {
     lines.forEach((line) => {
         const div = document.createElement('div');
         div.className = 'line';
-        
         const boldPart = document.createElement('span');
         const remainingPart = document.createElement('span');
-        
         const splitLine = line.split(':');
         boldPart.textContent = `${splitLine[0]}: `;
         remainingPart.textContent = splitLine.slice(1).join(':');
-        
         boldPart.style.fontWeight = 'bold';
-        
         div.appendChild(boldPart);
         div.appendChild(remainingPart);
-        
         element.appendChild(div);
     });
-}
-
-
-document.getElementById('downloadButton').addEventListener('click', createNewFile);
-
-function createNewFile() {
-    const parts = fileName.split('.');
-    if (parts.length >= 4) {
-        const newFileName = `${parts[0]}.${parts[1]}.${parts[2]}.000000.txt`;
-        const blob = new Blob([processedContent], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = newFileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
 }
